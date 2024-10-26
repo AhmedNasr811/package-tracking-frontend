@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ApiService } from '../api.service';
 
 @Component({
   selector: 'app-registration',
@@ -11,7 +12,7 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angula
 })
 export class RegistrationComponent {
  registrationForm: FormGroup; // Declare the form property
-constructor(private http: HttpClient, private fb: FormBuilder) {
+constructor(private http: HttpClient, private fb: FormBuilder, private apiService: ApiService) {
     // Initialize the form in the constructor
     this.registrationForm = this.fb.group({
       name: ['', [Validators.required]],
@@ -21,8 +22,22 @@ constructor(private http: HttpClient, private fb: FormBuilder) {
   });
 }
 
+
+
 onSubmit() {
-    console.log(this.registrationForm.value);
-}
+    const formData = this.registrationForm.value;
+    this.http.post('http://localhost:8080/register', formData)
+      .subscribe(
+        response => {
+          console.log('User registered successfully:', response);
+          // Handle successful registration, e.g., redirect or show a success message
+        },
+        error => {
+          console.error('Registration error:', error);
+          // Handle error, e.g., show an error message
+        }
+      );
+  }
+
 
 }
