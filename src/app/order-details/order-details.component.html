@@ -1,1 +1,9 @@
-<p>order-details works!</p>
+<h2>Order Details</h2>
+<div *ngIf="orderDetails">
+  <p>Pickup Location: {{ orderDetails.pickupLocation }}</p>
+  <p>Drop-off Location: {{ orderDetails.dropoffLocation }}</p>
+  <p>Package Details: {{ orderDetails.packageDetails }}</p>
+  <p>Delivery Time: {{ orderDetails.deliveryTime }}</p>
+  <button (click)="onCancel()">Cancel Order</button>
+</div>
+

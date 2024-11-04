@@ -1,1 +1,8 @@
-<p>courier-assigned-orders works!</p>
+<h2>Assigned Orders</h2>
+<ul>
+  <li *ngFor="let order of assignedOrders">
+    {{ order.details }} - Status: {{ order.status }}
+    <button (click)="onAccept(order.id)">Accept</button>
+    <button (click)="onDecline(order.id)">Decline</button>
+  </li>
+</ul>

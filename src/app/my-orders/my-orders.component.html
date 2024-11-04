@@ -1,1 +1,14 @@
-<p>my-orders works!</p>
+<h2>My Orders</h2>
+<ul>
+  <li *ngFor="let order of orders">
+    {{ order.details }} - Status: {{ order.status }}
+    <button (click)="onViewDetails(order.id)">View Details</button>
+  </li>
+</ul>
+<ul>
+  <li *ngFor="let order of orders">
+    Order ID: {{ order.id }}
+    <button (click)="onViewDetails(order.id)">View Details</button>
+  </li>
+</ul>
+

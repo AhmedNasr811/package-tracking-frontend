@@ -1,1 +1,4 @@
-<p>update-order-status works!</p>
+<h2>Update Order Status</h2>
+<label for="newStatus">New Status:</label>
+<input id="newStatus" #newStatus>
+<button (click)="onUpdateStatus(newStatus.value)">Update Status</button>

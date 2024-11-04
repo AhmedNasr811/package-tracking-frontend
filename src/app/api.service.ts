@@ -8,31 +8,31 @@ import { Observable } from 'rxjs';
 export class ApiService {
   private apiUrl = 'http://localhost:8080'; // Backend URL
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
+  // User Registration
   registerUser(userData: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/register`, userData);
   }
 
+  // User Login
   loginUser(credentials: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/login`, credentials);
   }
 
-
-
- // Create Order
+  // Create Order
   createOrder(orderData: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/orders`, orderData);
   }
 
   // Fetch Orders for the logged-in user
-  getMyOrders(userId: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/users/${userId}/orders`);
+  getMyOrders(userId: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/users/${userId}/orders`);
   }
 
   // Get details of a specific order
   getOrderDetails(orderId: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/orders/${orderId}`);
+    return this.http.get<any>(`${this.apiUrl}/orders/${orderId}`);
   }
 
   // Cancel an order (if pending)
@@ -41,18 +41,18 @@ export class ApiService {
   }
 
   // Fetch orders assigned to a specific courier
-  getAssignedOrders(courierId: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/couriers/${courierId}/orders`);
+  getAssignedOrders(courierId: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/couriers/${courierId}/orders`);
   }
 
   // Update the status of an order
-  updateOrderStatus(orderId: number, status: string): Observable<any> {
-    return this.http.put(`${this.apiUrl}/orders/${orderId}/status`, { status });
+  updateOrderStatus(orderId: number, statusUpdate: { status: string }): Observable<any> {
+    return this.http.put(`${this.apiUrl}/orders/${orderId}/status`, statusUpdate);
   }
 
   // Admin: Fetch all orders
-  getAllOrders(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/admin/orders`);
+  getAllOrders(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/admin/orders`);
   }
 
   // Admin: Assign an order to a courier
@@ -69,7 +69,4 @@ export class ApiService {
   deleteOrder(orderId: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/orders/${orderId}`);
   }
-
-
-
 }

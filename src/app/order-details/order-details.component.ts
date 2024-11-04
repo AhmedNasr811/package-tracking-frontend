@@ -1,12 +1,47 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ApiService } from '../api.service';
+
+
+import { CommonModule } from '@angular/common'; // Add this import
 
 @Component({
   selector: 'app-order-details',
   standalone: true,
-  imports: [],
-  templateUrl: './order-details.component.html',
-  styleUrl: './order-details.component.css'
-})
-export class OrderDetailsComponent {
 
+  imports: [CommonModule], // Include CommonModule here
+
+  templateUrl: './order-details.component.html',
+  styleUrls: ['./order-details.component.css']
+})
+export class OrderDetailsComponent implements OnInit {
+  orderId: string | null = null;
+  orderDetails: any;
+
+  constructor(private route: ActivatedRoute, private apiService: ApiService, private router: Router) {}
+
+  ngOnInit() {
+    this.orderId = this.route.snapshot.paramMap.get('id');
+    this.fetchOrderDetails();
+  }
+
+  fetchOrderDetails() {
+    if (this.orderId) {
+      this.apiService.getOrderDetails(Number(this.orderId)).subscribe({
+        next: response => {
+          this.orderDetails = response;
+          console.log('Fetched order details:', this.orderDetails);
+        },
+        error: error => {
+          console.error('Error fetching order details:', error);
+          alert('Failed to fetch order details.');
+        }
+      });
+    }
+  }
+
+  onCancel() {
+    // Logic to cancel the order (implement the API call if necessary)
+    alert('Order cancellation initiated.');
+  }
 }
