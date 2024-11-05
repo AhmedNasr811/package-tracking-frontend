@@ -70,7 +70,10 @@
               "buildTarget": "package-tracking-frontend:build:development"
             }
           },
-          "defaultConfiguration": "development"
+          "defaultConfiguration": "development",
+          
+          "options": {
+            "proxyConfig": "proxy.conf.json" }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n"
@@ -93,6 +96,7 @@
               "src/styles.css"
             ],
             "scripts": []
+            
           }
         }
       }
@@ -101,4 +105,6 @@
   "cli": {
     "analytics": "58a50f34-d4b8-4f0f-886f-b6453ecaa4e6"
   }
+  
 }
+
