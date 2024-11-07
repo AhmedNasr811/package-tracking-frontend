@@ -29,11 +29,12 @@ constructor(private http: HttpClient, private fb: FormBuilder, private apiServic
       const formData = this.loginForm.value;
 
       // Make the HTTP POST request to the backend
-      this.http.post('http://localhost:8080/login', formData)
+      this.http.post<{ token: string }>('http://localhost:8080/login', formData)
         .subscribe(
           response => {
             console.log('User logged in successfully:', response);
             // Handle successful login, e.g., redirect or show a success message
+            localStorage.setItem('token', response.token);
           },
           error => {
             console.error('Login error:', error);

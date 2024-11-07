@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -20,24 +20,32 @@ export class ApiService {
     return this.http.post(`${this.apiUrl}/login`, credentials);
   }
 
+    // Utility function to get the token from localStorage
+  private getToken(): string | null {
+    return localStorage.getItem('token');
+  }
+
   // Create Order
   createOrder(orderData: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/orders`, orderData);
+    const token = this.getToken();
+    const headers = token ? new HttpHeaders().set('Authorization', `Bearer ${token}`) : new HttpHeaders();
+    
+    return this.http.post(`${this.apiUrl}/create-order`, orderData);
   }
 
   // Fetch Orders for the logged-in user
   getMyOrders(userId: number): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/users/${userId}/orders`);
+    return this.http.get<any[]>(`${this.apiUrl}/my-orders?/${userId}`);
   }
 
   // Get details of a specific order
   getOrderDetails(orderId: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/orders/${orderId}`);
+    return this.http.get<any>(`${this.apiUrl}/order-details/${orderId}`);
   }
 
   // Cancel an order (if pending)
   cancelOrder(orderId: number): Observable<any> {
-    return this.http.put(`${this.apiUrl}/orders/${orderId}/cancel`, {});
+    return this.http.put(`${this.apiUrl}/cancel-order/${orderId}`, {});
   }
 
   // Fetch orders assigned to a specific courier
