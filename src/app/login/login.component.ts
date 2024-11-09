@@ -35,6 +35,8 @@ constructor(private http: HttpClient, private fb: FormBuilder, private apiServic
           response => {
             console.log('User logged in successfully:', response);
             // Handle successful login, e.g., redirect or show a success message
+           this.router.navigate(['/create-order']);  // Navigates to the "orders" page
+
           },
           error => {
             console.error('Login error:', error);
