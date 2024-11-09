@@ -24,7 +24,13 @@ export function app(): express.Express {
   server.use(cors());
 
   // Example Express Rest API endpoints
-
+  
+// User Registration Endpoint
+  server.post('/api/register', (req, res) => {
+    const { email, password } = req.body;
+    // Save user to the database and return a success message
+    res.json({ message: 'User registered successfully' });
+  });
   // User Login Endpoint
    server.post('/api/login', (req, res) => { 
     const { email, password } = req.body; 
@@ -37,6 +43,38 @@ export function app(): express.Express {
       res.status(401).json({ message: 'Invalid credentials' }); 
     } 
   });
+
+  // Create a new order
+  server.post('/api/orders', (req, res) => {
+    const { details } = req.body;
+    // Save the new order to the database
+    res.json({ message: 'Order created successfully' });
+  });
+   // Retrieve orders for a specific user
+   server.get('/api/orders/:userId', (req, res) => {
+    const userId = req.params.userId;
+    // Fetch orders for the given user ID from the database
+    const userOrders = [
+      { id: 1, details: 'Order 1', status: 'pending' }, 
+      { id: 2, details: 'Order 2', status: 'in transit' }, 
+      // Add more orders as needed 
+    ]; 
+    res.json({ orders: userOrders });
+  });
+   // Update order status
+   server.put('/api/orders/:orderId', (req, res) => {
+    const orderId = req.params.orderId;
+    const { status } = req.body;
+    // Update the order status in the database
+    res.json({ message: 'Order status updated successfully' });
+  });
+   // Assign orders to couriers
+   server.post('/api/assign-order', (req, res) => {
+    const { orderId, courierId } = req.body;
+    // Assign the order to the courier in the database
+    res.json({ message: 'Order assigned to courier successfully' });
+  });
+
 
   // Endpoint to fetch all orders assigned to a specific courier based on their ID 
   server.get('/api/assigned-orders/:courierId', (req, res) => { 
