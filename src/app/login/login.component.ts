@@ -32,10 +32,13 @@ constructor(private http: HttpClient, private fb: FormBuilder, private apiServic
       // Make the HTTP POST request to the backend
       this.http.post('http://localhost:8080/login', formData)
         .subscribe(
-          response => {
+          (response:any) => {
             console.log('User logged in successfully:', response);
+            let token: string = response.token;
+            window.localStorage.setItem('token',token);
+            window.localStorage.setItem('userid',response.user.id);
             // Handle successful login, e.g., redirect or show a success message
-           this.router.navigate(['/create-order']);  // Navigates to the "orders" page
+           //this.router.navigate(['/create-order']);  // Navigates to the "orders" page
 
           },
           error => {
@@ -47,7 +50,5 @@ constructor(private http: HttpClient, private fb: FormBuilder, private apiServic
       console.log('Form is invalid');
     }
   }
-
-
-
 }
+  
