@@ -154,6 +154,21 @@ export class ApiService {
     return this.http.put(`${this.apiUrl}/orders/${orderId}/assign`, { courierId });
   }
 
+
+
+
+   // Accept an order
+   acceptOrder(orderId: number): Observable<any> {
+    return this.http.post(`${this.apiUrl}/orders/${orderId}/accept`, {});
+  }
+
+  // Decline an order
+  declineOrder(orderId: number): Observable<any> {
+    return this.http.post(`${this.apiUrl}/orders/${orderId}/decline`, {});
+  }
+
+
+
   // Admin: Update order details (e.g., change status, reassign courier)
   updateOrder(orderId: number, updateData: any): Observable<any> {
     return this.http.put(`${this.apiUrl}/orders/${orderId}/update`, updateData);

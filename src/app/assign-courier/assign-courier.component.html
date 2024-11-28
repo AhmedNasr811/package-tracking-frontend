@@ -1,1 +1,32 @@
-<p>assign-courier works!</p>
+<div class="assign-courier">
+  <h1>Assigned Orders</h1>
+
+  <div *ngIf="orders.length === 0" class="no-orders">
+    <p>No orders have been assigned to you yet.</p>
+  </div>
+
+  <div *ngFor="let order of orders" class="order-card">
+    <div class="order-details">
+      <p><strong>Order ID:</strong> {{ order.id }}</p>
+      <p><strong>Pickup Location:</strong> {{ order.pickupLocation }}</p>
+      <p><strong>Dropoff Location:</strong> {{ order.dropoffLocation }}</p>
+      <p><strong>Package Details:</strong> {{ order.packageDetails }}</p>
+      <p><strong>Status:</strong> {{ order.status }}</p>
+    </div>
+
+    <div class="order-actions">
+      <button 
+        class="accept-btn" 
+        (click)="acceptOrder(order.id)" 
+        [disabled]="order.status === 'Accepted' || order.status === 'Declined'">
+        Accept
+      </button>
+      <button 
+        class="decline-btn" 
+        (click)="declineOrder(order.id)" 
+        [disabled]="order.status === 'Accepted' || order.status === 'Declined'">
+        Decline
+      </button>
+    </div>
+  </div>
+</div>

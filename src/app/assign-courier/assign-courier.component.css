@@ -1,0 +1,63 @@
+.assign-courier-container {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  h1 {
+    text-align: center;
+    color: #2b6cb0; /* RoyalBlue */
+    margin-bottom: 20px;
+  }
+  
+  .order-card {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    background: #f9f9f9;
+  }
+  
+  .order-card h3 {
+    color: #2c5282; /* Darker RoyalBlue */
+  }
+  
+  .order-card p {
+    margin: 5px 0;
+  }
+  
+  .actions {
+    margin-top: 10px;
+  }
+  
+  button {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  
+  .accept-btn {
+    background-color: #38a169; /* Green */
+    color: white;
+    margin-right: 10px;
+  }
+  
+  .accept-btn:disabled {
+    background-color: #c6f6d5; /* Light green */
+    cursor: not-allowed;
+  }
+  
+  .decline-btn {
+    background-color: #e53e3e; /* Red */
+    color: white;
+  }
+  
+  .decline-btn:disabled {
+    background-color: #fed7d7; /* Light red */
+    cursor: not-allowed;
+  }
+  
