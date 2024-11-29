@@ -24,7 +24,7 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegistrationComponent },
 
-  { path: 'orders', component: MyOrdersComponent },  // Define route for the orders page
+  { path: 'my-orders', component: MyOrdersComponent },  // Define route for the orders page
   { path: 'create-order', component: CreateOrderComponent },  // Define route for creating an order
 
   { path: 'order-details/:id', component: OrderDetailsComponent },  // Order Details page with dynamic ID

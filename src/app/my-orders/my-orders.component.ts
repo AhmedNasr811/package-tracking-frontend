@@ -24,7 +24,7 @@ export class MyOrdersComponent implements OnInit {
   }
 
   fetchOrders() {
-    this.apiService.getMyOrders(Number(localStorage.getItem('userid'))).subscribe({
+    this.apiService.getMyOrders().subscribe({
       next: (response: any[]) => {
         this.orders = response;
         console.log('Fetched orders:', this.orders);

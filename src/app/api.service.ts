@@ -116,10 +116,10 @@ export class ApiService {
   }
 
   // Fetch Orders for the logged-in user
-  getMyOrders(userId: number): Observable<any[]> {
+  getMyOrders(): Observable<any[]> {
     const token = this.getToken();
     const headers = token ? new HttpHeaders().set('Authorization', `${token}`) : new HttpHeaders();
-    return this.http.get<any[]>(`${this.apiUrl}/users/${userId}/orders`,{ headers });
+    return this.http.get<any[]>(`${this.apiUrl}/my-orders`, { headers });
   }
 
   // Get details of a specific order
