@@ -1,43 +1,56 @@
 import { Component } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ApiService } from '../api.service';
+import { ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { ApiService } from '../api.service'; // Adjust path as needed
+import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common'; // Import CommonModule
 
 @Component({
   selector: 'app-registration',
-  standalone: true,
-  imports: [ReactiveFormsModule],
   templateUrl: './registration.component.html',
-  styleUrl: './registration.component.css'
+  styleUrls: ['./registration.component.css'],
+  standalone: true,
+  imports: [ReactiveFormsModule,  CommonModule], // Import ReactiveFormsModule
 })
 export class RegistrationComponent {
- registrationForm: FormGroup; // Declare the form property
-constructor(private http: HttpClient, private fb: FormBuilder, private apiService: ApiService) {
-    // Initialize the form in the constructor
-    this.registrationForm = this.fb.group({
-      name: ['', [Validators.required]],
-      email: ['', [Validators.required, Validators.email]],
-      phone: ['', [Validators.required]],
-      password: ['', [Validators.required]]
-  });
-}
+  registrationForm!: FormGroup;
+  roles: string[] = ['user', 'courier', 'admin']; // Add 'admin' to the role options
 
-
-
-onSubmit() {
-    const formData = this.registrationForm.value;
-    this.http.post('http://localhost:8080/register', formData)
-      .subscribe(
-        response => {
-          console.log('User registered successfully:', response);
-          // Handle successful registration, e.g., redirect or show a success message
-        },
-        error => {
-          console.error('Registration error:', error);
-          // Handle error, e.g., show an error message
-        }
-      );
+  constructor(private formBuilder: FormBuilder, private apiService: ApiService, private router: Router) {
+    this.initializeForm();
   }
 
+  private initializeForm() {
+    this.registrationForm = this.formBuilder.group({
+      name: ['', [Validators.required, Validators.minLength(3)]],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      role: ['user', [Validators.required]], // Default role is 'user'
+    });
+  }
 
+  onSubmit() {
+    if (this.registrationForm.invalid) {
+      alert('Please correct the errors in the form.');
+      return;
+    }
+
+    const registrationData = this.registrationForm.value;
+
+    this.apiService.register(registrationData).subscribe({
+      next: (response) => {
+        if (registrationData.role === 'admin') {
+          alert(
+            'Registration submitted. Your account will be reviewed by a Super Admin.'
+          );
+        } else {
+          alert('Registration successful! Please log in.');
+        }
+        this.router.navigate(['/login']);
+      },
+      error: (error: any) => {
+        alert('Registration failed. Please try again.');
+        console.error('Registration error:', error);
+      },
+    });
+  }
 }

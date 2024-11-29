@@ -1,54 +1,55 @@
+// src/app/login/login.component.ts
 import { Component } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ApiService } from '../api.service';
+import { FormsModule } from '@angular/forms'; // Import FormsModule
+import { ApiService } from '../api.service'; // Adjust path as needed
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
-  standalone: true,
-  imports: [ReactiveFormsModule],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  styleUrls: ['./login.component.css'],
+  standalone: true, // Declare as standalone
+  imports: [FormsModule], // Import FormsModule
 })
 export class LoginComponent {
+  email: string = ''; // Declare properties
+  password: string = '';
 
-loginForm: FormGroup; // Declare the form property
+  constructor(private apiService: ApiService, private router: Router) {}
 
-constructor(private http: HttpClient, private fb: FormBuilder, private apiService: ApiService) {
-    // Initialize the form in the constructor
-    this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required]]
-  });
-}
-
-
-
-  onLogin() {
-    if (this.loginForm.valid) {
-      const formData = this.loginForm.value;
-
-      // Make the HTTP POST request to the backend
-      this.http.post('http://localhost:8080/login', formData)
-        .subscribe(
-          (response:any) => {
-            console.log('User logged in successfully:', response);
-            let token: string = response.token;
-            window.localStorage.setItem('token',token);
-            window.localStorage.setItem('userid',response.user.id);
-            // Handle successful login, e.g., redirect or show a success message
-           //this.router.navigate(['/create-order']);  // Navigates to the "orders" page
-
-          },
-          error => {
-            console.error('Login error:', error);
-            // Handle error, e.g., show an error message
-          }
-        );
-    } else {
-      console.log('Form is invalid');
+  login() {
+    if (!this.email || !this.password) {
+      alert('Please enter both email and password.');
+      return;
     }
+
+    const loginData = { email: this.email, password: this.password };
+
+    this.apiService.login(loginData).subscribe({
+      next: (response) => {
+        localStorage.setItem('token', response.token);
+        localStorage.setItem('role', response.role);
+
+        // Redirect based on role
+        switch (response.role) {
+          case 'admin':
+            this.router.navigate(['/admin-dashboard']);
+            break;
+          case 'courier':
+            this.router.navigate(['/courier-dashboard']);
+            break;
+          case 'user':
+            this.router.navigate(['/user-dashboard']);
+            break;
+          default:
+            alert('Role not recognized. Access denied.');
+            break;
+        }
+      },
+      error: (error) => {
+        console.error('Login failed:', error);
+        alert('Login failed. Please try again.');
+      },
+    });
   }
 }
-  

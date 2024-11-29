@@ -24,7 +24,7 @@ export class CourierAssignedOrdersComponent implements OnInit {
     this.fetchAssignedOrders();
   }
 
-  fetchAssignedOrders() {
+  fetchAssignedOrders(): void {
     this.apiService.getAssignedOrders(this.courierId).subscribe({
       next: (response: any[]) => {
         this.assignedOrders = response;
@@ -37,6 +37,17 @@ export class CourierAssignedOrdersComponent implements OnInit {
     });
   }
 
+  updateOrderStatus(orderId: number, status: string): void {
+    this.apiService.updateOrderStatus(orderId, status).subscribe({
+      next: () => {
+        alert(`Order ${orderId} marked as ${status}.`);
+        this.fetchAssignedOrders(); // Refresh the assigned orders list
+      },
+      error: (error) => {
+        console.error(`Failed to update order ${orderId} status:`, error);
+      },
+    });
+  }
   onAccept(orderId: string) {
     // Logic to accept the order (implement the API call if necessary)
     alert(`Order ${orderId} accepted.`);

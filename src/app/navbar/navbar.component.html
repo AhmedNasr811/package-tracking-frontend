@@ -1,0 +1,29 @@
+<!-- src/app/navbar/navbar.component.html -->
+
+<nav>
+    <ul>
+      <li *ngIf="!authService.isLoggedIn()">
+        <a routerLink="/login">Login</a>
+      </li>
+      <li *ngIf="!authService.isLoggedIn()">
+        <a routerLink="/register">Register</a>
+      </li>
+  
+      <li *ngIf="authService.isLoggedIn() && authService.getUserRole() === 'admin'">
+        <a routerLink="/admin-dashboard">Admin Dashboard</a>
+      </li>
+  
+      <li *ngIf="authService.isLoggedIn() && authService.getUserRole() === 'courier'">
+        <a routerLink="/courier-dashboard">Courier Dashboard</a>
+      </li>
+  
+      <li *ngIf="authService.isLoggedIn() && authService.getUserRole() === 'user'">
+        <a routerLink="/user-dashboard">User Dashboard</a>
+      </li>
+  
+      <li *ngIf="authService.isLoggedIn()">
+        <button (click)="logout()">Logout</button>
+      </li>
+    </ul>
+  </nav>
+  

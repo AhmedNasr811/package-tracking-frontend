@@ -1,3 +1,5 @@
+/* src/app/registration/registration.component.css */
+
 form {
   max-width: 400px;
   margin: 0 auto;
@@ -12,7 +14,8 @@ label {
   margin-bottom: 5px;
 }
 
-input {
+input,
+select {
   width: 100%;
   padding: 8px;
   box-sizing: border-box;
@@ -21,12 +24,12 @@ input {
 button {
   width: 100%;
   padding: 10px;
-  background-color: #007bff;
+  background-color: #4caf50;
   color: white;
   border: none;
   cursor: pointer;
 }
 
-button:disabled {
-  background-color: #aaa;
+button:hover {
+  background-color: #45a049;
 }

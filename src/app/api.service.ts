@@ -85,6 +85,25 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+interface RegisterPayload {
+  name: string;
+  email: string;
+  password: string;
+  role: string;
+}
+
+interface LoginPayload {
+  email: string;
+  password: string;
+}
+
+interface LoginResponse {
+  message: string;
+  token: string;
+  role: string;
+  user_id: number;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -93,15 +112,32 @@ export class ApiService {
 
   constructor(private http: HttpClient) {}
 
-  // User Registration
-  registerUser(userData: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/register`, userData);
+   // Register a new user
+   register(data: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/register`, data);
   }
 
-  // User Login
-  loginUser(credentials: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/login`, credentials);
+  // Login a user
+  login(data: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/login`, data);
   }
+
+  createAdmin(adminData: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/create-admin`, adminData);
+  }
+getPendingAdmins(): Observable<any[]> {
+  return this.http.get<any[]>(`${this.apiUrl}/pending-admins`);
+}
+
+  // // User Registration
+  // registerUser(userData: any): Observable<any> {
+  //   return this.http.post(`${this.apiUrl}/register`, userData);
+  // }
+
+  // // User Login
+  // loginUser(credentials: any): Observable<any> {
+  //   return this.http.post(`${this.apiUrl}/login`, credentials);
+  // }
 
     // Utility function to get the token from localStorage
   private getToken(): string | null {
@@ -136,12 +172,12 @@ export class ApiService {
 
   // Fetch orders assigned to a specific courier
   getAssignedOrders(courierId: number): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/couriers/${courierId}/orders`);
+    return this.http.get<any[]>(`${this.apiUrl}/assigned-orders?courier_id=${courierId}`);
   }
 
   // Update the status of an order
-  updateOrderStatus(orderId: number, statusUpdate: { status: string }): Observable<any> {
-    return this.http.put(`${this.apiUrl}/orders/${orderId}/status`, statusUpdate);
+  updateOrderStatus(orderId: number, status: string ): Observable<any> {
+    return this.http.put(`${this.apiUrl}/orders/${orderId}/status`, status);
   }
 
   // Admin: Fetch all orders

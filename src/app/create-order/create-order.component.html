@@ -1,15 +1,56 @@
+<!-- src/app/create-order/create-order.component.html -->
+<h2>Create New Order</h2>
 <form [formGroup]="createOrderForm" (ngSubmit)="onSubmit()">
-  <label for="pickupLocation">Pickup Location:</label>
-  <input id="pickupLocation" formControlName="pickupLocation" required>
+  <div>
+    <label for="pickup">Pickup Location:</label>
+    <input
+      id="pickup"
+      type="text"
+      formControlName="pickupLocation"
+      required
+    />
+    <div *ngIf="createOrderForm.get('pickupLocation')?.invalid && createOrderForm.get('pickupLocation')?.touched">
+      Pickup location is required.
+    </div>
+  </div>
 
-  <label for="dropoffLocation">Drop-off Location:</label>
-  <input id="dropoffLocation" formControlName="dropoffLocation" required>
+  <div>
+    <label for="dropoff">Dropoff Location:</label>
+    <input
+      id="dropoff"
+      type="text"
+      formControlName="dropoffLocation"
+      required
+    />
+    <div *ngIf="createOrderForm.get('dropoffLocation')?.invalid && createOrderForm.get('dropoffLocation')?.touched">
+      Dropoff location is required.
+    </div>
+  </div>
 
-  <label for="packageDetails">Package Details:</label>
-  <input id="packageDetails" formControlName="packageDetails" required>
+  <div>
+    <label for="details">Package Details:</label>
+    <textarea
+      id="details"
+      formControlName="packageDetails"
+      required
+    ></textarea>
+    <div *ngIf="createOrderForm.get('packageDetails')?.invalid && createOrderForm.get('packageDetails')?.touched">
+      Package details are required.
+    </div>
+  </div>
 
-  <label for="deliveryTime">Delivery Time:</label>
-  <input id="deliveryTime" formControlName="deliveryTime" required>
+  <div>
+    <label for="delivery">Delivery Time:</label>
+    <input
+      id="delivery"
+      type="datetime-local"
+      formControlName="deliveryTime"
+      required
+    />
+    <div *ngIf="createOrderForm.get('deliveryTime')?.invalid && createOrderForm.get('deliveryTime')?.touched">
+      Delivery time is required.
+    </div>
+  </div>
 
   <button type="submit">Create Order</button>
   <button type="button" (click)="onCancel()">Cancel</button>

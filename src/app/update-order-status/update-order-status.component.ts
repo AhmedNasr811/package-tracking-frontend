@@ -10,6 +10,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class UpdateOrderStatusComponent {
   orderId: string | null = null;
+  status: string | null = null
 
   constructor(private route: ActivatedRoute, private apiService: ApiService) {
     this.orderId = this.route.snapshot.paramMap.get('id');
@@ -17,7 +18,7 @@ export class UpdateOrderStatusComponent {
 
   onUpdateStatus(newStatus: string) {
     if (this.orderId) {
-      this.apiService.updateOrderStatus(Number(this.orderId), { status: newStatus }).subscribe({
+      this.apiService.updateOrderStatus(Number(this.orderId), String( this.status )).subscribe({
         next: response => {
           console.log('Order status updated successfully:', response);
           alert('Order status updated successfully!');
