@@ -1,0 +1,35 @@
+version: '3.7'
+
+services:
+  backend:
+    build:
+      context: ./package-tracking-system/Package_Tracking_Backend
+    ports:
+      - "8080:8080"
+    environment:
+      - DATABASE_URL=postgres://postgres:123@db:5432/PackageTracking_db
+    depends_on:
+      - db
+
+  frontend:
+    build:
+      context: ./package-tracking-frontend
+    ports:
+      - "4200:4200"
+    depends_on:
+      - backend
+
+  db:
+    build:
+      context: ./package-tracking-system/Package_Tracking_Backend/db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=123
+      - POSTGRES_DB=PackageTracking_db
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+volumes:
+  pg_data:
