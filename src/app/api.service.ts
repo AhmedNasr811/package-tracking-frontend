@@ -180,19 +180,28 @@ getPendingAdmins(): Observable<any[]> {
     return this.http.put(`${this.apiUrl}/cancel-order/${orderId}`,{},  {headers});
   }
 
+  
   // Fetch orders assigned to a specific courier
-  getAssignedOrders(courierId: number): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/assigned-orders?courier_id=${courierId}`);
-  }
-
-  // Update the status of an order
-  updateOrderStatus(orderId: number, status: string ): Observable<any> {
+  getAssignedOrders(): Observable<any[]> {
     const token = this.getToken();
+    console.log('Token:', token); // Debug the token
     const headers = token
     ? new HttpHeaders().set('Authorization', `Bearer ${token}`) // Ensure "Bearer " is included
     : new HttpHeaders();
-    return this.http.put(`${this.apiUrl}/orders/${orderId}/status`, status);
+    return this.http.get<any[]>(`${this.apiUrl}/courier/assigned-orders`, { headers });
   }
+  
+
+  // Update the status of an order
+  updateOrderStatus(orderId: number, status: string): Observable<any> {
+    const token = this.getToken();
+    const headers = token
+      ? new HttpHeaders().set('Authorization', `Bearer ${token}`)
+      : new HttpHeaders();
+  
+    return this.http.put(`${this.apiUrl}/courier/update-order-status/${orderId}`, { status }, { headers });
+  }
+  
 
   // Admin: Fetch all orders
   getAllOrders(): Observable<any[]> {

@@ -32,8 +32,8 @@ export const routes: Routes = [
   { path: 'admin/register', component: AdminRegistrationComponent },
   { path: 'admin/login', component: AdminLoginComponent },
   
-  { path: 'courier-assigned-orders', component: CourierAssignedOrdersComponent },  // Assigned Orders for Couriers
-  { path: 'update-order-status/:id', component: UpdateOrderStatusComponent },  // Update Order Status page
+  { path: 'courier/assigned-orders', component: CourierAssignedOrdersComponent },  // Assigned Orders for Couriers
+  { path: 'courier/update-order-status/:id', component: UpdateOrderStatusComponent },  // Update Order Status page
   { path: 'manage-orders', component: ManageOrdersComponent },  // Admin Manage Orders page
   { path: 'assign-courier', component: AssignCourierComponent },  // Assign Courier page
 
@@ -42,8 +42,8 @@ export const routes: Routes = [
     { path: '**', redirectTo: '/login' },
 
     { path: 'courier-dashboard', component: CourierDashboardComponent},
-    { path: '', redirectTo: '/login', pathMatch: 'full' },
-    { path: '**', redirectTo: '/login' },
+    // { path: '', redirectTo: '/login', pathMatch: 'full' },
+    // { path: '**', redirectTo: '/login' },
   
 
   //{ path: '', redirectTo: '/login', pathMatch: 'full' }, // Redirect to login on empty path

@@ -1,1 +1,20 @@
-<p>courier-dashboard works!</p>
+<div *ngIf="assignedOrders && assignedOrders.length === 0">No assigned orders found.</div>
+<div *ngIf="assignedOrders && assignedOrders.length > 0">
+  <div *ngFor="let order of assignedOrders">
+    <h3>Order #{{ order.id }}</h3>
+    <p>Pickup: {{ order.pickupLocation }}</p>
+    <p>Dropoff: {{ order.dropoffLocation }}</p>
+    <p>Package Details: {{ order.packageDetails }}</p>
+    <p>Status: {{ order.status }}</p>
+
+    <label for="status-{{ order.id }}">Update Status:</label>
+    <select
+      id="status-{{ order.id }}"
+      (change)="updateOrderStatus(order.id, $event)"
+    >
+      <option *ngFor="let status of statuses" [value]="status">
+        {{ status }}
+      </option>
+    </select>
+  </div>
+</div>

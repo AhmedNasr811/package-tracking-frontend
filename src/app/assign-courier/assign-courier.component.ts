@@ -34,7 +34,7 @@ export class AssignCourierComponent implements OnInit {
   }
 
   fetchAssignedOrders(): void {
-    this.apiService.getAssignedOrders(this.courierId).subscribe({
+    this.apiService.getAssignedOrders().subscribe({
       next: (response: any[]) => {
         this.orders = response;
       },

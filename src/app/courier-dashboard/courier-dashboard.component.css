@@ -1,0 +1,14 @@
+<h1>Courier Dashboard</h1>
+<div *ngIf="assignedOrders.length === 0">No assigned orders.</div>
+<div *ngFor="let order of assignedOrders">
+  <h3>Order #{{ order.id }}</h3>
+  <p>Pickup: {{ order.pickup_location }}</p>
+  <p>Dropoff: {{ order.dropoff_location }}</p>
+  <p>Package Details: {{ order.package_details }}</p>
+  <p>Status: {{ order.status }}</p>
+
+  <label for="status">Update Status:</label>
+  <select id="status" (change)="updateOrderStatus(order.id, $event.target.value)">
+    <option *ngFor="let status of statuses" [value]="status">{{ status }}</option>
+  </select>
+</div>

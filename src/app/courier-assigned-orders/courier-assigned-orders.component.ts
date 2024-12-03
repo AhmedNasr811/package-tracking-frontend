@@ -25,7 +25,7 @@ export class CourierAssignedOrdersComponent implements OnInit {
   }
 
   fetchAssignedOrders(): void {
-    this.apiService.getAssignedOrders(this.courierId).subscribe({
+    this.apiService.getAssignedOrders().subscribe({
       next: (response: any[]) => {
         this.assignedOrders = response;
         console.log('Fetched assigned orders:', this.assignedOrders);
