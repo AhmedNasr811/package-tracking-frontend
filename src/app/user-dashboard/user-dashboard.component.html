@@ -10,6 +10,8 @@
       <th>Order ID</th>
       <th>Pickup Location</th>
       <th>Dropoff Location</th>
+      <th>Package Details</th>
+      <th>Delivery Time: </th>
       <th>Status</th>
       <th>Actions</th>
     </tr>
@@ -17,11 +19,13 @@
   <tbody>
     <tr *ngFor="let order of orders">
       <td>{{ order.id }}</td>
-      <td>{{ order.pickup_location }}</td>
-      <td>{{ order.dropoff_location }}</td>
+      <td>{{ order.pickupLocation }}</td>
+      <td>{{ order.dropoffLocation }}</td>
+      <td>{{ order.packageDetails }}</td>
+      <td>{{ order.deliveryTime }}</td>
       <td>{{ order.status }}</td>
       <td>
-        <button (click)="viewOrderDetails(order.id)">View Details</button>
+        <!-- <button (click)="viewOrderDetails(order.id)">View Details</button> -->
         <button
           (click)="cancelOrder(order.id)"
           [disabled]="order.status !== 'pending'"

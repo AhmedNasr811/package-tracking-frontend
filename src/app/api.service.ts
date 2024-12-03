@@ -147,27 +147,37 @@ getPendingAdmins(): Observable<any[]> {
   // Create Order
   createOrder(orderData: any): Observable<any> {
     const token = this.getToken();
-    const headers = token ? new HttpHeaders().set('Authorization', `${token}`) : new HttpHeaders();
+    const headers = token
+    ? new HttpHeaders().set('Authorization', `Bearer ${token}`) // Ensure "Bearer " is included
+    : new HttpHeaders();
     return this.http.post(`${this.apiUrl}/create-order`, orderData,{ headers });
   }
 
   // Fetch Orders for the logged-in user
   getMyOrders(): Observable<any[]> {
     const token = this.getToken();
-    const headers = token ? new HttpHeaders().set('Authorization', `${token}`) : new HttpHeaders();
+    const headers = token
+    ? new HttpHeaders().set('Authorization', `Bearer ${token}`) // Ensure "Bearer " is included
+    : new HttpHeaders();
     return this.http.get<any[]>(`${this.apiUrl}/my-orders`, { headers });
   }
 
   // Get details of a specific order
   getOrderDetails(orderId: number): Observable<any> {
     const token = this.getToken();
-    const headers = token ? new HttpHeaders().set('Authorization', `${token}`) : new HttpHeaders();
+    const headers = token
+    ? new HttpHeaders().set('Authorization', `Bearer ${token}`) // Ensure "Bearer " is included
+    : new HttpHeaders();
     return this.http.get<any>(`${this.apiUrl}/order-details/${orderId}`,{headers});
   }
 
   // Cancel an order (if pending)
   cancelOrder(orderId: number): Observable<any> {
-    return this.http.put(`${this.apiUrl}/cancel-order/${orderId}`, {});
+    const token = this.getToken();
+    const headers = token
+    ? new HttpHeaders().set('Authorization', `Bearer ${token}`) // Ensure "Bearer " is included
+    : new HttpHeaders();
+    return this.http.put(`${this.apiUrl}/cancel-order/${orderId}`,{},  {headers});
   }
 
   // Fetch orders assigned to a specific courier
@@ -177,6 +187,10 @@ getPendingAdmins(): Observable<any[]> {
 
   // Update the status of an order
   updateOrderStatus(orderId: number, status: string ): Observable<any> {
+    const token = this.getToken();
+    const headers = token
+    ? new HttpHeaders().set('Authorization', `Bearer ${token}`) // Ensure "Bearer " is included
+    : new HttpHeaders();
     return this.http.put(`${this.apiUrl}/orders/${orderId}/status`, status);
   }
 

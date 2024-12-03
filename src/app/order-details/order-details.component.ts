@@ -41,7 +41,9 @@ export class OrderDetailsComponent implements OnInit {
   }
 
   onCancel() {
-    // Logic to cancel the order (implement the API call if necessary)
-    alert('Order cancellation initiated.');
+    this.router.navigate(['/cancel-order',this.orderId]);
+    alert('Order cancellation successful.');
+    this.router.navigate(['/user-dashboard']);
+
   }
 }

@@ -5,11 +5,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { RegistrationComponent } from './registration/registration.component';
 import { LoginComponent } from './login/login.component';
 
-
 import { AdminRegistrationComponent } from './admin-registration/admin-registration.component';
 import { AdminLoginComponent } from './admin-login/admin-login.component';
-
-
 
 import { CreateOrderComponent } from './create-order/create-order.component';
 import { MyOrdersComponent } from './my-orders/my-orders.component';
@@ -18,6 +15,8 @@ import { CourierAssignedOrdersComponent } from './courier-assigned-orders/courie
 import { UpdateOrderStatusComponent } from './update-order-status/update-order-status.component';
 import { ManageOrdersComponent } from './manage-orders/manage-orders.component';
 import { AssignCourierComponent } from './assign-courier/assign-courier.component';
+import { UserDashboardComponent } from './user-dashboard/user-dashboard.component';
+import { CourierDashboardComponent } from './courier-dashboard/courier-dashboard.component';
 
 
 export const routes: Routes = [
@@ -38,6 +37,14 @@ export const routes: Routes = [
   { path: 'manage-orders', component: ManageOrdersComponent },  // Admin Manage Orders page
   { path: 'assign-courier', component: AssignCourierComponent },  // Assign Courier page
 
+    { path: 'user-dashboard', component: UserDashboardComponent },
+    { path: '', redirectTo: '/login', pathMatch: 'full' },
+    { path: '**', redirectTo: '/login' },
+
+    { path: 'courier-dashboard', component: CourierDashboardComponent},
+    { path: '', redirectTo: '/login', pathMatch: 'full' },
+    { path: '**', redirectTo: '/login' },
+  
 
   //{ path: '', redirectTo: '/login', pathMatch: 'full' }, // Redirect to login on empty path
   //{ path: '**', redirectTo: '/login' } // Wildcard route to handle unknown paths

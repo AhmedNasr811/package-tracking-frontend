@@ -30,6 +30,17 @@ export class CreateOrderComponent {
     }
 
     const formData = this.createOrderForm.value;
+    // Debug: Log form data
+    console.log('Form Data:', formData);
+
+    // Check if deliveryTime is populated
+    if (!formData.deliveryTime) {
+      alert('Delivery Time is required.');
+      return;
+    }
+
+    // Convert delivery_time to ISO string
+    formData.deliveryTime = new Date(formData.deliveryTime).toISOString();
 
     this.apiService.createOrder(formData).subscribe({
       next: response => {
@@ -47,5 +58,7 @@ export class CreateOrderComponent {
   onCancel() {
     this.createOrderForm.reset();
     alert('Order creation cancelled.');
+    this.router.navigate(['/user-dashboard']); // Redirect to the dashboard or another relevant page
+
   }
 }
