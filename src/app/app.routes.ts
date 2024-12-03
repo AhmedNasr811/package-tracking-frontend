@@ -42,8 +42,8 @@ export const routes: Routes = [
     { path: '**', redirectTo: '/login' },
 
     { path: 'courier-dashboard', component: CourierDashboardComponent},
-    // { path: '', redirectTo: '/login', pathMatch: 'full' },
-    // { path: '**', redirectTo: '/login' },
+    { path: '', redirectTo: '/login', pathMatch: 'full' },
+    { path: '**', redirectTo: '/login' },
   
 
   //{ path: '', redirectTo: '/login', pathMatch: 'full' }, // Redirect to login on empty path

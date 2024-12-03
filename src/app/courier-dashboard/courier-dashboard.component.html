@@ -1,20 +1,23 @@
-<div *ngIf="assignedOrders && assignedOrders.length === 0">No assigned orders found.</div>
-<div *ngIf="assignedOrders && assignedOrders.length > 0">
-  <div *ngFor="let order of assignedOrders">
-    <h3>Order #{{ order.id }}</h3>
-    <p>Pickup: {{ order.pickupLocation }}</p>
-    <p>Dropoff: {{ order.dropoffLocation }}</p>
-    <p>Package Details: {{ order.packageDetails }}</p>
-    <p>Status: {{ order.status }}</p>
+<div class="dashboard-container">
+    <h1>Courier Dashboard</h1>
+    
+    <!-- Display when no orders are assigned -->
+    <div *ngIf="assignedOrders?.length === 0" class="no-orders">
+      No assigned orders found.
+    </div>
+    
 
-    <label for="status-{{ order.id }}">Update Status:</label>
-    <select
-      id="status-{{ order.id }}"
-      (change)="updateOrderStatus(order.id, $event)"
-    >
-      <option *ngFor="let status of statuses" [value]="status">
-        {{ status }}
-      </option>
-    </select>
+      <div *ngFor="let order of assignedOrders" class="order-card">
+        <h3>Order #{{ order.id }}</h3>
+        <p>Pickup: {{ order.pickupLocation }}</p>
+        <p>Dropoff: {{ order.dropoffLocation }}</p>
+        <p>Package Details: {{ order.packageDetails }}</p>
+        <p>Status: {{ order.status }}</p>
+        
+        <label for="status-{{ order.id }}">Update Status:</label>
+        <select id="status-{{ order.id }}" (change)="updateOrderStatus(order.id, $event)">
+          <option *ngFor="let status of statuses" [value]="status">{{ status }}</option>
+        </select>
+    </div>
   </div>
-</div>
+  
