@@ -10,47 +10,58 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./courier-dashboard.component.css']
 })
 export class CourierDashboardComponent implements OnInit {
-  assignedOrders: any[] = [];
-  statuses: string[] = ['picked up', 'in transit', 'delivered']; // Status options
+  pendingOrders: any[] = [];
+  acceptedOrders: any[] = [];
+  statuses: string[] = ['picked up', 'in transit', 'delivered'];
 
   constructor(private apiService: ApiService) {}
 
   ngOnInit(): void {
-    this.fetchAssignedOrders();
+    this.fetchPendingOrders();
+    this.fetchAcceptedOrders();
   }
 
-  fetchAssignedOrders(): void {
-    this.apiService.getAssignedOrders().subscribe({
-      next: (orders) => {
-        this.assignedOrders = orders || []; // Fallback to an empty array
-        console.log('Assigned orders:', orders);
-      },
-      error: (error) => {
-        this.assignedOrders = []; // Handle error by resetting assignedOrders
-        console.error('Failed to fetch assigned orders:', error);
-        alert('Failed to fetch assigned orders. Please try again.');
-      },
+  fetchPendingOrders(): void {
+    this.apiService.getPendingOrders().subscribe({
+      next: (orders) => (this.pendingOrders = orders),
+      error: (error) => console.error('Error fetching pending orders:', error),
     });
   }
-  
+
+  fetchAcceptedOrders(): void {
+    // Simulate fetching accepted orders (modify backend to support this)
+    this.acceptedOrders = this.pendingOrders.filter(
+      (order) => order.status === 'accepted'
+    );
+  }
+
+  acceptOrder(orderId: number): void {
+    this.apiService.acceptOrder(orderId).subscribe({
+      next: () => {
+        alert('Order accepted successfully.');
+        this.fetchPendingOrders();
+        this.fetchAcceptedOrders();
+      },
+      error: (error) => alert('Failed to accept order: ' + error.message),
+    });
+  }
+
+  declineOrder(orderId: number): void {
+    this.apiService.declineOrder(orderId).subscribe({
+      next: () => {
+        alert('Order declined successfully.');
+        this.fetchPendingOrders();
+      },
+      error: (error) => alert('Failed to decline order: ' + error.message),
+    });
+  }
 
   updateOrderStatus(orderId: number, event: Event): void {
     const target = event.target as HTMLSelectElement; // Cast EventTarget to HTMLSelectElement
-    if (target && target.value) { // Ensure target and value exist
-      const status = target.value;
-      this.apiService.updateOrderStatus(orderId, status).subscribe({
-        next: () => {
-          alert('Order status updated successfully.');
-          this.fetchAssignedOrders(); // Refresh the list
-        },
-        error: (error) => {
-          console.error('Failed to update order status:', error);
-          alert('Failed to update order status.');
-        },
-      });
-    } else {
-      console.error('Invalid status update event');
-    }
+    const status = target.value; // Access the value of the selected option
+    this.apiService.updateOrderStatus(orderId, String(status)).subscribe({
+      next: () => alert('Order status updated successfully.'),
+      error: (error) => alert('Failed to update status: ' + error.message),
+    });
   }
-  
 }

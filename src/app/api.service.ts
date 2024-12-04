@@ -201,14 +201,14 @@ export class ApiService {
   
 
   // Update the status of an order
-  updateOrderStatus(orderId: number, status: string): Observable<any> {
-    const token = this.getToken();
-    const headers = token
-      ? new HttpHeaders().set('Authorization', `Bearer ${token}`)
-      : new HttpHeaders();
+  // updateOrderStatus(orderId: number, status: string): Observable<any> {
+  //   const token = this.getToken();
+  //   const headers = token
+  //     ? new HttpHeaders().set('Authorization', `Bearer ${token}`)
+  //     : new HttpHeaders();
   
-    return this.http.put(`${this.apiUrl}/courier/update-order-status/${orderId}`, { status }, { headers });
-  }
+  //   return this.http.put(`${this.apiUrl}/courier/update-order-status/${orderId}`, { status }, { headers });
+  // }
   
 
   getAllOrders(): Observable<any[]> {
@@ -256,15 +256,42 @@ export class ApiService {
      return this.http.get<any[]>(`${this.apiUrl}/admin/list-couriers`, { headers });
   }
 
-   // Accept an order
-   acceptOrder(orderId: number): Observable<any> {
-    return this.http.post(`${this.apiUrl}/orders/${orderId}/accept`, {});
+  getPendingOrders(): Observable<any[]> {
+    const token = localStorage.getItem('token');
+    const headers = token
+      ? new HttpHeaders().set('Authorization', `Bearer ${token}`)
+      : new HttpHeaders();
+  
+    return this.http.get<any[]>(`${this.apiUrl}/courier/pending-orders`, { headers });
   }
-
-  // Decline an order
+  
+  acceptOrder(orderId: number): Observable<any> {
+    const token = localStorage.getItem('token');
+    const headers = token
+      ? new HttpHeaders().set('Authorization', `Bearer ${token}`)
+      : new HttpHeaders();
+  
+    return this.http.put(`${this.apiUrl}/courier/accept-order/${orderId}`, {}, { headers });
+  }
+  
   declineOrder(orderId: number): Observable<any> {
-    return this.http.post(`${this.apiUrl}/orders/${orderId}/decline`, {});
+    const token = localStorage.getItem('token');
+    const headers = token
+      ? new HttpHeaders().set('Authorization', `Bearer ${token}`)
+      : new HttpHeaders();
+  
+    return this.http.put(`${this.apiUrl}/courier/decline-order/${orderId}`, {}, { headers });
   }
+  
+  updateOrderStatus(orderId: number, status: string): Observable<any> {
+    const token = localStorage.getItem('token');
+    const headers = token
+      ? new HttpHeaders().set('Authorization', `Bearer ${token}`)
+      : new HttpHeaders();
+  
+    return this.http.put(`${this.apiUrl}/courier/update-status/${orderId}`, { status }, { headers });
+  }
+  
 
 
 }
