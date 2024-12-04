@@ -11,12 +11,14 @@ import { CommonModule } from '@angular/common';
 })
 export class AdminDashboardComponent implements OnInit {
   orders: any[] = [];
+  couriers: any[] = [];
   statuses: string[] = ['pending', 'in progress', 'completed', 'cancelled'];
 
   constructor(private apiService: ApiService) {}
 
   ngOnInit(): void {
     this.fetchOrders();
+    this.fetchCouriers();
   }
 
   fetchOrders(): void {
@@ -61,4 +63,40 @@ export class AdminDashboardComponent implements OnInit {
       });
     }
   }
+
+  fetchCouriers(): void {
+    this.apiService.getAllCouriers().subscribe({
+      next: (couriers) => {
+        this.couriers = couriers;
+      },
+      error: (error) => {
+        console.error('Failed to fetch couriers:', error);
+        alert('Failed to fetch couriers.');
+      },
+    });
+  }
+
+  assignOrder(orderId: number, event: Event): void {
+    const target = event.target as HTMLSelectElement; // Cast EventTarget to HTMLSelectElement
+    const courierId = target.value; // Access the value of the selected option
+  
+    if (courierId) {
+      this.apiService.assignOrderToCourier(orderId, Number(courierId)).subscribe({
+        next: () => {
+          alert('Order assigned successfully.');
+          this.fetchOrders(); // Refresh the orders list
+        },
+        error: (error) => {
+          console.error('Failed to assign order:', error);
+          alert('Failed to assign order.');
+        },
+      });
+    } else {
+      console.error('No courier selected');
+      alert('Please select a courier.');
+    }
+  }
+  
+
+  
 }

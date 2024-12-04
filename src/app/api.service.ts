@@ -240,7 +240,20 @@ export class ApiService {
 
   // Admin: Assign an order to a courier
   assignOrderToCourier(orderId: number, courierId: number): Observable<any> {
-    return this.http.put(`${this.apiUrl}/orders/${orderId}/assign`, { courierId });
+    const token = localStorage.getItem('token');
+    const headers = token
+      ? new HttpHeaders().set('Authorization', `Bearer ${token}`)
+      : new HttpHeaders();
+    return this.http.put(`${this.apiUrl}/admin/assign-order`, { courierId });
+  }
+
+  getAllCouriers(): Observable<any[]> {
+    const token = localStorage.getItem('token');
+    const headers = token
+      ? new HttpHeaders().set('Authorization', `Bearer ${token}`)
+      : new HttpHeaders();
+  
+     return this.http.get<any[]>(`${this.apiUrl}/admin/list-couriers`, { headers });
   }
 
    // Accept an order
