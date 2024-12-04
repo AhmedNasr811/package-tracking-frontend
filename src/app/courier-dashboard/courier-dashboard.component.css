@@ -1,14 +1,77 @@
-<h1>Courier Dashboard</h1>
-<div *ngIf="assignedOrders.length === 0">No assigned orders.</div>
-<div *ngFor="let order of assignedOrders">
-  <h3>Order #{{ order.id }}</h3>
-  <p>Pickup: {{ order.pickup_location }}</p>
-  <p>Dropoff: {{ order.dropoff_location }}</p>
-  <p>Package Details: {{ order.package_details }}</p>
-  <p>Status: {{ order.status }}</p>
-
-  <label for="status">Update Status:</label>
-  <select id="status" (change)="updateOrderStatus(order.id, $event.target.value)">
-    <option *ngFor="let status of statuses" [value]="status">{{ status }}</option>
-  </select>
-</div>
+/* General container styles */
+.dashboard-container {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    max-width: 800px;
+    margin: 20px auto;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Header styling */
+  h1 {
+    font-size: 24px;
+    text-align: center;
+    color: #333;
+  }
+  
+  /* Order card styles */
+  .order-card {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  }
+  
+  /* Order details */
+  .order-card h3 {
+    margin: 0;
+    font-size: 18px;
+    color: #444;
+  }
+  
+  .order-card p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #666;
+  }
+  
+  /* Dropdown and button styles */
+  label {
+    font-size: 14px;
+    color: #444;
+    margin-right: 10px;
+  }
+  
+  select {
+    padding: 5px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  button {
+    padding: 8px 12px;
+    font-size: 14px;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  
+  /* No assigned orders message */
+  .no-orders {
+    text-align: center;
+    color: #888;
+    font-size: 16px;
+    margin: 20px 0;
+  }
+  

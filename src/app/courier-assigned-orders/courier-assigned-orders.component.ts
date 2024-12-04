@@ -14,39 +14,47 @@ import { CommonModule } from '@angular/common'; // Add this import
 })
 export class CourierAssignedOrdersComponent implements OnInit {
 
-  courierId: number=1; // Define this property
-
   assignedOrders: any[] = [];
+  statuses: string[] = ['picked up', 'in transit', 'delivered']; // Status options
 
   constructor(private apiService: ApiService) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.fetchAssignedOrders();
   }
 
   fetchAssignedOrders(): void {
     this.apiService.getAssignedOrders().subscribe({
-      next: (response: any[]) => {
-        this.assignedOrders = response;
-        console.log('Fetched assigned orders:', this.assignedOrders);
+      next: (orders) => {
+        this.assignedOrders = orders || []; // Fallback to an empty array
+        console.log('Assigned orders:', orders);
       },
-      error: error => {
-        console.error('Error fetching assigned orders:', error);
-        alert('Failed to fetch assigned orders.');
-      }
+      error: (error) => {
+        this.assignedOrders = []; // Handle error by resetting assignedOrders
+        console.error('Failed to fetch assigned orders:', error);
+        alert('Failed to fetch assigned orders. Please try again.');
+      },
     });
   }
 
-  updateOrderStatus(orderId: number, status: string): void {
-    this.apiService.updateOrderStatus(orderId, status).subscribe({
-      next: () => {
-        alert(`Order ${orderId} marked as ${status}.`);
-        this.fetchAssignedOrders(); // Refresh the assigned orders list
-      },
-      error: (error) => {
-        console.error(`Failed to update order ${orderId} status:`, error);
-      },
-    });
+
+  updateOrderStatus(orderId: number, event: Event): void {
+    const target = event.target as HTMLSelectElement; // Cast EventTarget to HTMLSelectElement
+    if (target && target.value) { // Ensure target and value exist
+      const status = target.value;
+      this.apiService.updateOrderStatus(orderId, status).subscribe({
+        next: () => {
+          alert('Order status updated successfully.');
+          this.fetchAssignedOrders(); // Refresh the list
+        },
+        error: (error) => {
+          console.error('Failed to update order status:', error);
+          alert('Failed to update order status.');
+        },
+      });
+    } else {
+      console.error('Invalid status update event');
+    }
   }
   onAccept(orderId: string) {
     // Logic to accept the order (implement the API call if necessary)

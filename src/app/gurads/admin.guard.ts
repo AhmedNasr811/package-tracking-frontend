@@ -19,10 +19,10 @@ export class AdminGuard implements CanActivate {
     state: RouterStateSnapshot
   ): boolean {
     const role = localStorage.getItem('role');
-    if (role === 'super_admin') {
+    if (role === 'admin') {
       return true;
     } else {
-      alert('Access denied. Super Admins only.');
+      alert('Access denied. Admins only.');
       this.router.navigate(['/login']);
       return false;
     }

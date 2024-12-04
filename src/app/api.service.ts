@@ -123,11 +123,19 @@ export class ApiService {
   }
 
   createAdmin(adminData: any): Observable<any> {
+    const token = this.getToken();
+    const headers = token
+    ? new HttpHeaders().set('Authorization', `Bearer ${token}`) // Ensure "Bearer " is included
+    : new HttpHeaders();
     return this.http.post(`${this.apiUrl}/create-admin`, adminData);
   }
-getPendingAdmins(): Observable<any[]> {
-  return this.http.get<any[]>(`${this.apiUrl}/pending-admins`);
-}
+  getPendingAdmins(): Observable<any[]> {
+    const token = this.getToken();
+    const headers = token
+    ? new HttpHeaders().set('Authorization', `Bearer ${token}`) // Ensure "Bearer " is included
+    : new HttpHeaders();
+    return this.http.get<any[]>(`${this.apiUrl}/pending-admins`);
+  }
 
   // // User Registration
   // registerUser(userData: any): Observable<any> {
@@ -203,18 +211,37 @@ getPendingAdmins(): Observable<any[]> {
   }
   
 
-  // Admin: Fetch all orders
   getAllOrders(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/admin/orders`);
+    const token = localStorage.getItem('token');
+    const headers = token
+      ? new HttpHeaders().set('Authorization', `Bearer ${token}`)
+      : new HttpHeaders();
+  
+    return this.http.get<any[]>(`${this.apiUrl}/admin/list-orders`, { headers });
+  }
+  
+  updateOrder(orderId: number, status: string): Observable<any> {
+    const token = localStorage.getItem('token');
+    const headers = token
+      ? new HttpHeaders().set('Authorization', `Bearer ${token}`)
+      : new HttpHeaders();
+  
+    return this.http.put(`${this.apiUrl}/admin/orders/update-status/${orderId}`, { status }, { headers });
+  }
+  
+  deleteOrder(orderId: number): Observable<any> {
+    const token = localStorage.getItem('token');
+    const headers = token
+      ? new HttpHeaders().set('Authorization', `Bearer ${token}`)
+      : new HttpHeaders();
+  
+    return this.http.delete(`${this.apiUrl}/admin/delete-order/${orderId}`, { headers });
   }
 
   // Admin: Assign an order to a courier
   assignOrderToCourier(orderId: number, courierId: number): Observable<any> {
     return this.http.put(`${this.apiUrl}/orders/${orderId}/assign`, { courierId });
   }
-
-
-
 
    // Accept an order
    acceptOrder(orderId: number): Observable<any> {
@@ -227,14 +254,4 @@ getPendingAdmins(): Observable<any[]> {
   }
 
 
-
-  // Admin: Update order details (e.g., change status, reassign courier)
-  updateOrder(orderId: number, updateData: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/orders/${orderId}/update`, updateData);
-  }
-
-  // Admin: Delete an order
-  deleteOrder(orderId: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/orders/${orderId}`);
-  }
 }
