@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../api.service';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-courier-dashboard',
@@ -10,11 +11,13 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./courier-dashboard.component.css']
 })
 export class CourierDashboardComponent implements OnInit {
-  pendingOrders: any[] = [];
-  acceptedOrders: any[] = [];
+  pendingOrders: any[] = [];  // Initialized as empty array
+  acceptedOrders: any[] = [];  // Initialized as empty array
+  allOrders: any[] = [];
+
   statuses: string[] = ['picked up', 'in transit', 'delivered'];
 
-  constructor(private apiService: ApiService) {}
+  constructor(private apiService: ApiService, private router: Router) {}
 
   ngOnInit(): void {
     this.fetchPendingOrders();
@@ -23,16 +26,22 @@ export class CourierDashboardComponent implements OnInit {
 
   fetchPendingOrders(): void {
     this.apiService.getPendingOrders().subscribe({
-      next: (orders) => (this.pendingOrders = orders),
-      error: (error) => console.error('Error fetching pending orders:', error),
+      next: (orders) => (this.pendingOrders = orders || []),
+      error: (error) => {
+        console.error('Error fetching pending orders:', error);
+        this.pendingOrders = [];  // Fallback in case of error
+      },
     });
   }
 
   fetchAcceptedOrders(): void {
-    // Simulate fetching accepted orders (modify backend to support this)
-    this.acceptedOrders = this.pendingOrders.filter(
-      (order) => order.status === 'accepted'
-    );
+    this.apiService.getAssignedOrders().subscribe({
+      next: (orders) => (this.acceptedOrders = orders || []),
+      error: (error) => {
+        console.error('Error fetching accepted orders:', error);
+        this.acceptedOrders = [];  // Fallback in case of error
+      },
+    });
   }
 
   acceptOrder(orderId: number): void {
@@ -57,11 +66,18 @@ export class CourierDashboardComponent implements OnInit {
   }
 
   updateOrderStatus(orderId: number, event: Event): void {
-    const target = event.target as HTMLSelectElement; // Cast EventTarget to HTMLSelectElement
-    const status = target.value; // Access the value of the selected option
-    this.apiService.updateOrderStatus(orderId, String(status)).subscribe({
-      next: () => alert('Order status updated successfully.'),
-      error: (error) => alert('Failed to update status: ' + error.message),
+    const target = event.target as HTMLSelectElement;
+    const status = target.value;
+
+    this.apiService.updateOrder(orderId, status).subscribe({
+      next: () => {
+        alert('Order status updated successfully.');
+        this.fetchAcceptedOrders(); // Refresh the orders
+      },
+      error: (error) => {
+        console.error('Failed to update order status:', error);
+        alert('Failed to update order status.');
+      },
     });
   }
 }

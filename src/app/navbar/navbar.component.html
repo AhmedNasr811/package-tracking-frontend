@@ -2,10 +2,10 @@
 
 <nav>
     <ul>
-      <li *ngIf="!authService.isLoggedIn()">
+      <li *ngIf="!authService.isLoggedIn() && !authService.getUserRole()">
         <a routerLink="/login">Login</a>
       </li>
-      <li *ngIf="!authService.isLoggedIn()">
+      <li *ngIf="!authService.isLoggedIn() && !authService.getUserRole()">
         <a routerLink="/register">Register</a>
       </li>
   
@@ -21,7 +21,7 @@
         <a routerLink="/user-dashboard">User Dashboard</a>
       </li>
   
-      <li *ngIf="authService.isLoggedIn()">
+      <li *ngIf="!authService.isLoggedIn() && authService.getUserRole()">
         <button (click)="logout()">Logout</button>
       </li>
     </ul>

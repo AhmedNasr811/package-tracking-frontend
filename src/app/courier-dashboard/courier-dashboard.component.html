@@ -1,8 +1,10 @@
 <div class="courier-dashboard">
   <h1 class="dashboard-title">Courier Dashboard</h1>
 
+  <!-- Pending Orders Section -->
   <div class="section">
     <h2 class="section-title">Pending Orders</h2>
+    <!-- Safe check for pendingOrders -->
     <div *ngIf="pendingOrders.length === 0" class="no-orders">
       No pending orders at the moment.
     </div>
@@ -21,15 +23,22 @@
     </div>
   </div>
 
+  <!-- Accepted Orders Section -->
   <div class="section">
-    <h2 class="section-title">Accepted Orders</h2>
+    <h2 class="section-title">Assigned Orders</h2>
+    <!-- Safe check for acceptedOrders -->
     <div *ngIf="acceptedOrders.length === 0" class="no-orders">
-      No accepted orders. Accept orders from the list above to manage them here.
+      No assigned orders. Accept orders from the list above to manage them here.
     </div>
     <div *ngFor="let order of acceptedOrders" class="order-card">
       <div class="order-details">
         <p><strong>Order ID:</strong> {{ order.id }}</p>
+        <p><strong>Pickup:</strong> {{ order.pickupLocation }}</p>
+        <p><strong>Dropoff:</strong> {{ order.dropoffLocation }}</p>
+        <p><strong>Details:</strong> {{ order.packageDetails }}</p>
+        <p><strong>Delivery Time:</strong> {{ order.deliveryTime }}</p>
         <p><strong>Status:</strong> {{ order.status }}</p>
+
       </div>
       <div class="order-actions">
         <select class="status-dropdown" (change)="updateOrderStatus(order.id, $event)">

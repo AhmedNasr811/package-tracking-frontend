@@ -1,18 +1,22 @@
 // src/app/services/auth.service.ts
 
-import { Injectable } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { Router } from '@angular/router';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private router: Router) {}
+  constructor(private router: Router, @Inject(PLATFORM_ID) private platformId: any) {}
 
   // Check if the user is logged in
   isLoggedIn(): boolean {
-    return !!localStorage.getItem('token');
-  }
+    if (isPlatformBrowser(this.platformId)) {
+        return !!localStorage.getItem('authToken');
+    }
+    return false;
+}
 
   // Get the user's role
   getUserRole(): string | null {

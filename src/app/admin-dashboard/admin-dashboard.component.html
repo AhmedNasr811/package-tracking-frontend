@@ -12,7 +12,9 @@
         <th>Dropoff</th>
         <th>Details</th>
         <th>Delivery Time</th>
-        <th>Status</th>
+        <th>Current Status</th>
+        <th>Current Courier</th>
+        <th>Update Status</th>
         <th>Assign Courier</th>
         <th>Actions</th>
       </tr>
@@ -25,22 +27,25 @@
         <td>{{ order.dropoffLocation }}</td>
         <td>{{ order.packageDetails }}</td>
         <td>{{ order.deliveryTime }}</td>
+        <td>{{ order.status }}</td>
+        <td>{{ getCourierName(order.courier_id)}}</td>
+
+
         <td>
           <select [value]="order.status" (change)="updateOrderStatus(order.id, $event)">
-            <option *ngFor="let status of statuses" [value]="status">
+            <option *ngFor="let status of statuses" [value]="">
               {{ status }}
             </option>
           </select>
         </td>
         <td>
-          <select (change)="assignOrder(order.id, $event)">
-            <option value="" disabled selected>Select Courier</option>
+          <select [value]="order.courier_id" (change)="assignOrder(order.id, $event)">
             <option *ngFor="let courier of couriers" [value]="courier.id">
               {{ courier.name }}
             </option>
           </select>
-          
         </td>
+        
         <td>
           <button class="delete" (click)="deleteOrder(order.id)">Delete</button>
         </td>

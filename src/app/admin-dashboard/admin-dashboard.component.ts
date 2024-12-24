@@ -67,7 +67,7 @@ export class AdminDashboardComponent implements OnInit {
   fetchCouriers(): void {
     this.apiService.getAllCouriers().subscribe({
       next: (couriers) => {
-        this.couriers = couriers;
+        this.couriers = couriers || []; // Ensure it's an array or fallback to empty array
       },
       error: (error) => {
         console.error('Failed to fetch couriers:', error);
@@ -75,28 +75,30 @@ export class AdminDashboardComponent implements OnInit {
       },
     });
   }
+  
+
+  getCourierName(courierId: number): string {
+    //alert(this.couriers.at(0))
+    const courier = this.couriers.find(c => c.id === courierId);
+    return courier ? courier.name : 'No Courier Assigned';
+  }
 
   assignOrder(orderId: number, event: Event): void {
     const target = event.target as HTMLSelectElement; // Cast EventTarget to HTMLSelectElement
-    const courierId = target.value; // Access the value of the selected option
+    const courierId = target.value; // Get the value of the selected option
   
-    if (courierId) {
-      this.apiService.assignOrderToCourier(orderId, Number(courierId)).subscribe({
-        next: () => {
-          alert('Order assigned successfully.');
-          this.fetchOrders(); // Refresh the orders list
-        },
-        error: (error) => {
-          console.error('Failed to assign order:', error);
-          alert('Failed to assign order.');
-        },
-      });
-    } else {
-      console.error('No courier selected');
-      alert('Please select a courier.');
-    }
+    // Call the API to assign the order to the selected courier
+    this.apiService.assignOrderToCourier(orderId, Number(courierId)).subscribe({
+      next: () => {
+        alert('Order is assigned successfully.');
+        this.fetchOrders(); // Refresh the orders
+      },
+      error: (error: any) => {
+        console.error('Failed to assign order:', error);
+        alert('Failed to assign order. Please try again later.');
+      },
+    });
   }
-  
 
   
 }
