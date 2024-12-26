@@ -1,19 +1,22 @@
-FROM node:18
+FROM node:18 
 
-# Set working directory
-WORKDIR /app
+# Set the working directory
+WORKDIR /usr/local/app
 
 # Copy package.json and package-lock.json
 COPY package.json package-lock.json ./
 
 # Install dependencies
-RUN npm install
+RUN npm install 
 
-# Copy the rest of the frontend code
+# Copy the rest of the application code
 COPY . .
+#comment
+RUN chmod -R 777 /usr/local/app
 
-# Expose the application port
+# Expose port 4200
 EXPOSE 4200
 
-# Run the app
-CMD ["npm", "start"]
+
+# Start the Angular application using npx
+CMD ["npx", "ng", "serve", "--host", "0.0.0.0"]
